@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import LogContext from '../../contexts/LogContext';
 
 function FeedsScreen() {
+  const value = useContext(LogContext);
+
   return (
     <View style={styles.block}>
-      <LogContext.Consumer>{value => <Text>{value}</Text>}</LogContext.Consumer>
+      <Text>{value}</Text>
     </View>
   );
 }
