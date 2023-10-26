@@ -13,7 +13,11 @@ function RockStack() {
         component={MainTab}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="write" component={WriteScreen} />
+      <Stack.Screen
+        name="write"
+        component={WriteScreen}
+        options={{headerShown: false}}
+      />
     </Stack.Navigator>
   );
 }
