@@ -1,10 +1,27 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WriteEditor from '../../components/WriteEditor';
 import WriteHeader from '../../components/WriteHeader';
+import LogContext from '../../contexts/LogContext';
 
 function WriteScreen() {
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const navigation = useNavigation();
+
+  const {onCreate} = useContext(LogContext);
+  const onSave = () => {
+    onCreate({
+      title,
+      body,
+      date: new Date().toISOString(),
+    });
+
+    navigation.pop();
+  };
+
   return (
     <SafeAreaView style={styles.block}>
       {/* TextInput에서 Enter를 여러번 눌러 화면에서 기본적으로 보여줄 수 있는 줄 수를 초과할 경우,
@@ -13,8 +30,13 @@ function WriteScreen() {
       <KeyboardAvoidingView
         style={styles.avoidingView}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        <WriteHeader />
-        <WriteEditor />
+        <WriteHeader onSave={onSave} />
+        <WriteEditor
+          title={title}
+          body={body}
+          onChangeTitle={setTitle}
+          onChangeBody={setBody}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

@@ -1,4 +1,5 @@
 import {createContext, useState} from 'react';
+import {v4 as uuidv4} from 'uuid';
 
 /**
  * 전역 상태 관리를 위한 첫번째 방법: context
@@ -11,14 +12,25 @@ const LogContext = createContext();
 /**
  * 유지보수성을 높이기 위해 Provider 전용 컴포넌트를 따로 만듦
  * 안그러면 App 컴포넌트에서 value 값을 계속 추가해야함
- * @param {any} param0 Provider 하위에 들어가는 컴포넌트들
+ * @param {any} param Provider 하위에 들어가는 컴포넌트들
  * @returns {React.JSX.Element}
  */
 export function LogContextProvider({children}) {
-  const [text, setText] = useState('');
+  const [logs, setLogs] = useState([]);
+
+  const onCreate = ({title, body, date}) => {
+    const log = {
+      id: uuidv4(),
+      title,
+      body,
+      date,
+    };
+
+    setLogs([log, ...logs]);
+  };
 
   return (
-    <LogContext.Provider value={{text, setText}}>
+    <LogContext.Provider value={{logs, onCreate}}>
       {children}
     </LogContext.Provider>
   );
